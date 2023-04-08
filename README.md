@@ -43,3 +43,9 @@ eas build -p android
 
 ### Upload to play store
 - TBD
+
+### Learning
+- [React-native-paper](https://callstack.github.io/react-native-paper/docs/guides/getting-started/)
+- [Component library doc](https://callstack.github.io/react-native-paper/docs/components)
+- [Expo doc](https://docs.expo.dev/)
+- [Expo dashboard](https://expo.dev/login)
