@@ -12,7 +12,7 @@ export default function Login({ setIsLoggedIn }) {
         <Text 
           style={styles.appName} 
         >
-          KiranaShop
+          KiranaShop 
         </Text>
         <Image
           style={styles.logo}
