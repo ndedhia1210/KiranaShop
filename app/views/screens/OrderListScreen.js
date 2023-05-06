@@ -4,10 +4,10 @@ import { StyleSheet, Text } from "react-native";
 import Screen from "../components/Screen";
 import { defaultStyles, colors } from "../styles";
 
-function CategoryListScreen(props) {
+function OrderListScreen(props) {
   return (
     <Screen style={styles.container}>
-      <Text style={styles.text}>Category list screen coming soon...</Text>
+      <Text style={styles.text}>Orders list screen coming soon...</Text>
     </Screen>
   );
 }
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryListScreen;
+export default OrderListScreen;

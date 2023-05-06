@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 
-import colors from "../styles/colors";
-import defaultStyles from "../styles/styles";
+import { defaultStyles, colors } from "../styles";
 import Screen from "../components/Screen";
+import AuthContext from "../../auth/context";
 
-function LoginScreen({ setIsLoggedIn }) {
+function LoginScreen(props) {
+  const authContext = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   function authenticate() {
-    setIsLoggedIn(true);
-    // if(username === 'admin' && password === 'admin')
-    //   setIsLoggedIn(true);
+    authContext.setUser({});
   }
 
   return (

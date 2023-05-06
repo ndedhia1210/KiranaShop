@@ -1,18 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
-import CategoryListScreen from "./app/views/screens/CategoryListScreen";
-import LoginScreen from "./app/views/screens/LoginScreen";
+import AuthContext from "./app/auth/context";
+import navigationTheme from "./app/navigation/navigationTheme";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import AppNavigator from "./app/navigation/AppNavigator";
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState();
 
   return (
-    <>
-      {!isLoggedIn ? (
-        <LoginScreen setIsLoggedIn={setIsLoggedIn} />
-      ) : (
-        <CategoryListScreen />
-      )}
-    </>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <NavigationContainer theme={navigationTheme}>
+        {user ? <AppNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
