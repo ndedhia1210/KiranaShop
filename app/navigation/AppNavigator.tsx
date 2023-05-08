@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ToastProvider } from "react-native-toast-notifications";
 
+import ProductNavigator from "./ProductNavigator";
 import CategoryListScreen from "../views/screens/CategoryListScreen";
 import AccountScreen from "../views/screens/AccountScreen";
 import CartScreen from "../views/screens/CartScreen";
@@ -14,7 +15,7 @@ const AppNavigator = () => (
     <Tab.Navigator>
       <Tab.Screen
         name="Categories"
-        component={CategoryListScreen}
+        component={ProductNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
