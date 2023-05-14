@@ -10,7 +10,7 @@ import colors from "./colors";
 
 export default {
   text: {
-    color: colors.black,
+    color: colors.sb_dark,
     fontSize: 18,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Helvetica",
   },
