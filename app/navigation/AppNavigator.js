@@ -33,7 +33,7 @@ const AppNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Account"
+      name="Profile"
       component={AccountScreen}
       options={{
         tabBarIcon: ({ color, size }) => (
