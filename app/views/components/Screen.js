@@ -1,6 +1,13 @@
 import React from "react";
 import Constants from "expo-constants";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  View,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 /*
  * Wrapper component for the screens which adds a padding to the top based on the
@@ -11,7 +18,10 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 function Screen({ children, style }) {
   return (
     <SafeAreaView style={[styles.screen, style]}>
-      <View style={style}>{children}</View>
+      <StatusBar barStyle={"dark-content"} />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={style}>{children}</View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
