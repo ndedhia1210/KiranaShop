@@ -1,21 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-// import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, Text } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Screen from "../components/Screen";
-import CartItemList from "../components/Cart/CartItemList";
+import ProductList from "../components/Product/ProductList";
 
-function CartScreen({ navigation, route }) {
+function ProductListScreen({ navigation, route }) {
   return (
     <Screen style={styles.container}>
-      {/* <MaterialCommunityIcons
+      <MaterialCommunityIcons
         name="chevron-left"
         size={40}
         style={styles.back}
-        onPress={() => navigation.navigate("Categories")}
-      /> */}
-      <Text style={styles.headerText}>Your cart</Text>
-      <CartItemList />
+        onPress={() => navigation.pop()}
+      />
+      <Text style={styles.headerText}>{route.params.categoryDetails.name}</Text>
+      <ProductList categoryDetails={route.params.categoryDetails} />
     </Screen>
   );
 }
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartScreen;
+export default ProductListScreen;

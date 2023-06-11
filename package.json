@@ -12,7 +12,7 @@
     "@expo/webpack-config": "^18.0.1",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/bottom-tabs": "^5.4.4",
-    "@react-navigation/native": "^5.3.2",
+    "@react-navigation/native": "^5.4.4",
     "@react-navigation/stack": "^5.3.5",
     "apisauce": "^1.1.1",
     "expo": "^48.0.10",
@@ -30,6 +30,7 @@
     "react-native-reanimated": "~1.7.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
+    "react-native-toast-notifications": "^3.3.1",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {

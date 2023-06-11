@@ -18,6 +18,7 @@ import { USER_OBJECT_KEY } from "../../store/constants";
 import useApi from "../../api/hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import TextInput from "../components/TextInput";
+import DismissKeyboardView from "../components/DismissKeyboardView";
 
 function LoginScreen(props) {
   const loginApi = useApi(auth.login);
@@ -40,56 +41,58 @@ function LoginScreen(props) {
   };
 
   return (
-    <Screen style={styles.container}>
-      <ActivityIndicator visible={loginApi.loading} />
-      <KeyboardAvoidingView
-        behavior="position"
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={styles.keyboardAvoidView}
-      >
-        <Text style={styles.appName}>KiranaShop</Text>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/AppLogo.png")}
-        />
-        <View style={styles.form}>
-          <TextInput
-            label="Username"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
+    <Screen>
+      <DismissKeyboardView style={styles.container}>
+        <ActivityIndicator visible={loginApi.loading} />
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+          style={styles.keyboardAvoidView}
+        >
+          <Text style={styles.appName}>KiranaShop</Text>
+          <Image
+            style={styles.logo}
+            source={require("../../assets/AppLogo.png")}
           />
-          <TextInput
-            label="Password"
-            value={password}
-            secureTextEntry={true}
-            textContentType="password"
-            onChangeText={(text) => setPassword(text)}
-          />
-          <Button
-            textColor={colors.sb_dark}
-            buttonColor={colors.sb_yellow_100}
-            style={styles.button}
-            mode="contained"
-            onPress={handleLogin}
-          >
-            <Text style={defaultStyles.buttonText}>Login</Text>
-          </Button>
-          <Button
-            textColor={colors.sb_dark}
-            buttonColor={colors.sb_blue_100}
-            style={styles.button}
-            mode="contained"
-            onPress={() => console.log("Pressed")}
-          >
-            <Text style={defaultStyles.buttonText}>
+          <View style={styles.form}>
+            <TextInput
+              label="Username"
+              value={username}
+              onChangeText={(text) => setUsername(text)}
+            />
+            <TextInput
+              label="Password"
+              value={password}
+              secureTextEntry={true}
+              textContentType="password"
+              onChangeText={(text) => setPassword(text)}
+            />
+            <Button
+              textColor={colors.sb_dark}
+              buttonColor={colors.sb_yellow_100}
+              style={styles.button}
+              mode="contained"
+              onPress={handleLogin}
+              labelStyle={styles.buttonLabel}
+            >
+              Login
+            </Button>
+            <Button
+              textColor={colors.sb_dark}
+              buttonColor={colors.sb_blue_100}
+              style={styles.button}
+              mode="contained"
+              onPress={() => console.log("Pressed")}
+              labelStyle={styles.buttonLabel}
+            >
               Request for new password
+            </Button>
+            <Text style={styles.note}>
+              Note: Please contact shopkeeper for new password!
             </Text>
-          </Button>
-          <Text style={styles.note}>
-            Note: Please contact shopkeeper for new password!
-          </Text>
-        </View>
-      </KeyboardAvoidingView>
+          </View>
+        </KeyboardAvoidingView>
+      </DismissKeyboardView>
     </Screen>
   );
 }
@@ -125,9 +128,12 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 5,
     justifyContent: "center",
-    paddingTop: 6,
-    paddingBottom: 6,
+    height: 50,
     marginTop: 6,
+  },
+  buttonLabel: {
+    lineHeight: 36,
+    fontSize: 20,
   },
   inputTextBox: {
     backgroundColor: colors.sb_bright,

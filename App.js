@@ -58,7 +58,7 @@ export default function App() {
       translucent={true}
       isLoaded={isAppLoaded()}
       logoImage={require("./app/assets/AppLogo.png")}
-      backgroundColor={colors.sb_red_100}
+      backgroundColor={colors.sb_orange_200}
       logoHeight={150}
       logoWidth={150}
     >

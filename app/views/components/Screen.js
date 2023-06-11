@@ -6,8 +6,8 @@ import {
   StyleSheet,
   View,
   Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 /*
  * Wrapper component for the screens which adds a padding to the top based on the
@@ -19,9 +19,10 @@ function Screen({ children, style }) {
   return (
     <SafeAreaView style={[styles.screen, style]}>
       <StatusBar barStyle={"dark-content"} />
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={style}>{children}</View>
-      </TouchableWithoutFeedback>
+      {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> */}
+      {/* <View style={style}>{children}</View> */}
+      {/* </TouchableWithoutFeedback> */}
+      {children}
     </SafeAreaView>
   );
 }
