@@ -5,15 +5,17 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
 } from "react-native";
 import { Button } from "react-native-paper";
 
 import Screen from "../components/Screen";
-import { defaultStyles, colors } from "../styles";
+import { colors } from "../styles";
 import AuthContext from "../../auth/context";
 import asyncStorage from "../../store/asyncStorage";
 import { USER_OBJECT_KEY } from "../../store/constants";
 import TextInput from "../components/TextInput";
+import DismissKeyboardView from "../components/DismissKeyboardView";
 
 function AccountScreen(props) {
   const authContext = useContext(AuthContext);
@@ -31,52 +33,57 @@ function AccountScreen(props) {
 
   return (
     <Screen style={styles.container}>
-      <KeyboardAvoidingView
-        behavior="position"
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={styles.keyboardAvoidView}
-      >
-        <Text style={styles.headerText}>Profile</Text>
-        <Image style={styles.profileDp} />
-        <View style={styles.form}>
-          <TextInput
-            label="Name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <TextInput
-            label="Username"
-            disabled={true}
-            value={authContext.user.username}
-          />
-          <TextInput
-            label="Phone number"
-            value={phone}
-            onChangeText={(text) => setPhone(text)}
-          />
-          <TextInput
-            label="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <TextInput
-            label="Address"
-            multiline={true}
-            value={address}
-            numberOfLines={3}
-            onChangeText={(text) => setAddress(text)}
-          />
-        </View>
-        <Button
-          textColor={colors.sb_dark}
-          buttonColor={colors.sb_bright}
-          style={styles.button}
-          mode="contained"
-          onPress={handleLogout}
+      <DismissKeyboardView>
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+          style={styles.keyboardAvoidView}
         >
-          <Text style={defaultStyles.buttonText}>Logout</Text>
-        </Button>
-      </KeyboardAvoidingView>
+          <Text style={styles.headerText}>Profile</Text>
+          <ScrollView>
+            <Image style={styles.profileDp} />
+            <View style={styles.form}>
+              <TextInput
+                label="Name"
+                value={name}
+                onChangeText={(text) => setName(text)}
+              />
+              <TextInput
+                label="Username"
+                disabled={true}
+                value={authContext.user.username}
+              />
+              <TextInput
+                label="Phone number"
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
+              />
+              <TextInput
+                label="Email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              />
+              <TextInput
+                label="Address"
+                multiline={true}
+                value={address}
+                numberOfLines={3}
+                onChangeText={(text) => setAddress(text)}
+              />
+            </View>
+            <Button
+              textColor={colors.sb_dark}
+              buttonColor={colors.sb_bright}
+              style={styles.button}
+              mode="contained"
+              onPress={handleLogout}
+              labelStyle={styles.buttonLabel}
+            >
+              Logout
+            </Button>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </DismissKeyboardView>
     </Screen>
   );
 }
@@ -85,15 +92,19 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 5,
     justifyContent: "center",
-    paddingTop: 6,
-    paddingBottom: 6,
     marginTop: 30,
     width: "100%",
+    height: 50,
+  },
+  buttonLabel: {
+    lineHeight: 36,
+    fontSize: 20,
   },
   container: {
     flex: 1,
     paddingHorizontal: 20,
     width: "100%",
+    height: "100%",
     backgroundColor: colors.sb_bright_100,
     alignItems: "center",
     overflow: "scroll",
@@ -104,7 +115,7 @@ const styles = StyleSheet.create({
     maxWidth: 500,
   },
   headerText: {
-    marginTop: 45,
+    marginTop: 20,
     fontSize: 35,
     alignSelf: "center",
   },
@@ -121,10 +132,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.sb_gray_100,
     backgroundColor: colors.sb_gray_100,
-  },
-  text: {
-    ...defaultStyles.text,
-    color: colors.sb_dark,
   },
 });
 
