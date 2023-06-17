@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, FlatList, Dimensions, View } from "react-native";
 
 import Screen from "../components/Screen";
-import defaultStyle from "../styles/styles";
-import colors from "../styles/colors";
+import { defaultStyles, colors } from "../styles";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;
