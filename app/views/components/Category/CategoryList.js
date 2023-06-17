@@ -1,4 +1,6 @@
+import { FlatList, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
+import CategoryItem from "./CategoryItem";
 
 function CategoryList({ navigation }) {
     const [categories, setCategories] = useState([]);
@@ -92,5 +94,23 @@ function CategoryList({ navigation }) {
         const list = getCategories();
         setCategories(list);
     }, []);
+
+    return (
+        <FlatList
+          data={categories}
+          numColumns={2}
+          keyExtractor={(item, index) => item.name}
+          renderItem={({ item }) => (
+            <CategoryItem categoryDetails={item} navigation={navigation} />
+          )}
+          style={styles.scrollView}
+        />
+    );
 }
+
+const styles = StyleSheet.create({
+    scrollView: {
+      paddingHorizontal: 5,
+    },
+});
 export default CategoryList;
