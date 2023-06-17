@@ -18,4 +18,5 @@ export default {
   sb_yellow_100: "#FFBD14",
   sb_gray_100: "#E3E1E1",
   sb_peach: "#FDAF83",
+  sb_orange_100: "#FDCFB4",
 };
