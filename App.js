@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AnimatedSplash from "react-native-animated-splash-screen";
 
@@ -11,12 +11,13 @@ import { USER_OBJECT_KEY } from "./app/store/constants";
 import ErrorScreen from "./app/views/screens/ErrorScreen";
 import { AsyncStatus } from "./app/constants/enums";
 import { colors } from "./app/views/styles";
+import AppContext from "./app/managers/appContext";
 
 export default function App() {
-  const [user, setUser] = useState();
   const [appStatus, setAppStatus] = useState(AsyncStatus.Idle);
 
   const restoreUserSession = async () => {
+    // TODO: After we introduce TTL for the token, here we will need to check token expiry and call logOut
     const userObj = await asyncStorage.getDataObject(USER_OBJECT_KEY);
     if (!userObj) return;
     setUser(userObj);
@@ -62,11 +63,13 @@ export default function App() {
       logoHeight={150}
       logoWidth={150}
     >
-      <AuthContext.Provider value={{ user, setUser }}>
+      <AppContext.Provider value={{ state }}>
+        {/* <AuthContext.Provider value={{ user, setUser, token, setToken }}> */}
         <NavigationContainer theme={navigationTheme}>
           {renderSwitch()}
         </NavigationContainer>
-      </AuthContext.Provider>
+        {/* </AuthContext.Provider> */}
+      </AppContext.Provider>
     </AnimatedSplash>
   );
 }

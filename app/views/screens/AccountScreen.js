@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -6,26 +6,16 @@ import {
   Text,
   View,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Formik } from "formik";
 
 import Screen from "../components/Screen";
 import { defaultStyles, colors } from "../styles";
-import AuthContext from "../../auth/context";
-import asyncStorage from "../../store/asyncStorage";
-import { USER_OBJECT_KEY } from "../../store/constants";
 import TextInput from "../components/TextInput";
+import useAuth from "../../auth/hooks/useAuth";
+import Button from "../components/Button";
 
 function AccountScreen(props) {
-  const authContext = useContext(AuthContext);
-  const [name, setName] = useState(authContext.user.name);
-  const [phone, setPhone] = useState(authContext.user.phone);
-  const [email, setEmail] = useState(authContext.user.email);
-  const [address, setAddress] = useState(authContext.user.address);
-
-  const handleLogout = () => {
-    authContext.setUser(null);
-    asyncStorage.removeData(USER_OBJECT_KEY);
-  };
+  const { user, logOut } = useAuth();
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
@@ -39,57 +29,65 @@ function AccountScreen(props) {
         <Text style={styles.headerText}>Profile</Text>
         <Image style={styles.profileDp} />
         <View style={styles.form}>
-          <TextInput
-            label="Name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <TextInput
-            label="Username"
-            disabled={true}
-            value={authContext.user.username}
-          />
-          <TextInput
-            label="Phone number"
-            value={phone}
-            onChangeText={(text) => setPhone(text)}
-          />
-          <TextInput
-            label="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <TextInput
-            label="Address"
-            multiline={true}
-            value={address}
-            numberOfLines={3}
-            onChangeText={(text) => setAddress(text)}
-          />
+          <Formik
+            style={styles.form}
+            initialValues={{
+              name: user.name,
+              phone: user.phone,
+              email: user.email,
+              address: user.address,
+              username: user.username,
+            }}
+            onSubmit={({ name, phone, email, address, username }) => {
+              console.log(name, phone, email, address, username);
+            }}
+          >
+            {({ values, handleChange, handleSubmit }) => (
+              <>
+                <TextInput
+                  label="Name"
+                  value={values.name}
+                  onChangeText={handleChange("name")}
+                />
+                <TextInput
+                  label="Username"
+                  value={values.username}
+                  disabled={true}
+                  onChangeText={handleChange("username")}
+                />
+                <TextInput
+                  label="Phone number"
+                  value={values.phone}
+                  onChangeText={handleChange("phone")}
+                />
+                <TextInput
+                  label="Email"
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                />
+                <TextInput
+                  label="Address"
+                  value={values.address}
+                  multiline={true}
+                  numberOfLines={3}
+                  onChangeText={handleChange("address")}
+                />
+              </>
+            )}
+          </Formik>
         </View>
         <Button
+          label={"Logout"}
           textColor={colors.sb_dark}
           buttonColor={colors.sb_bright}
-          style={styles.button}
-          mode="contained"
-          onPress={handleLogout}
-        >
-          <Text style={defaultStyles.buttonText}>Logout</Text>
-        </Button>
+          onPress={() => logOut()}
+        />
       </KeyboardAvoidingView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    borderRadius: 5,
-    justifyContent: "center",
-    paddingTop: 6,
-    paddingBottom: 6,
-    marginTop: 30,
-    width: "100%",
-  },
   container: {
     flex: 1,
     paddingHorizontal: 20,
@@ -102,6 +100,7 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 15,
     maxWidth: 500,
+    marginBottom: 20,
   },
   headerText: {
     marginTop: 45,

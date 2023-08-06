@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -7,41 +7,54 @@ import {
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Formik } from "formik";
 
 import { defaultStyles, colors } from "../styles";
 import Screen from "../components/Screen";
-import AuthContext from "../../auth/context";
-import auth from "../../api/login";
-import asyncStorage from "../../store/asyncStorage";
-import { USER_OBJECT_KEY } from "../../store/constants";
+import AuthApi from "../../api/auth";
+import UserApi from "../../api/user";
 import useApi from "../../api/hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import TextInput from "../components/TextInput";
+import useAuth from "../../auth/hooks/useAuth";
+import ErrorMessage from "../components/ErrorMessage";
+import Button from "../components/Button";
 
 function LoginScreen(props) {
-  const loginApi = useApi(auth.login);
-  const authContext = useContext(AuthContext);
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const authApi = useApi(AuthApi.auth);
+  const getUserApi = useApi(UserApi.getUser);
+  const { logIn } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
-  const handleLogin = async () => {
+  const handleLogin = (username, password) => {
     Keyboard.dismiss();
-    const result = await loginApi.request(username, password);
-    if (!result.ok) {
-      // TODO: set state variable to true which will enable the display of error message
-      console.log(result.data);
-      return;
-    }
-    authContext.setUser(result.data);
-    asyncStorage.storeDataObject(USER_OBJECT_KEY, result.data);
+    setLoading(true);
+    logIn(authApi, getUserApi, username, password)
+      .then(() => {
+        if (authApi.error) {
+          console.log(authApi.errorMessage);
+          setErrorMessage(authApi.errorMessage);
+        } else if (getUserApi.error) {
+          console.log(authApi.errorMessage);
+          setErrorMessage(getUserApi.errorMessage);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrorMessage(
+          "Something went wrong. Please contact technical support."
+        );
+        setLoading(false);
+      });
   };
 
   return (
     <Screen style={styles.container}>
-      <ActivityIndicator visible={loginApi.loading} />
+      <ActivityIndicator visible={loading} />
       <KeyboardAvoidingView
         behavior="position"
         keyboardVerticalOffset={keyboardVerticalOffset}
@@ -53,41 +66,50 @@ function LoginScreen(props) {
           source={require("../../assets/AppLogo.png")}
         />
         <View style={styles.form}>
-          <TextInput
-            label="Username"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
-          />
-          <TextInput
-            label="Password"
-            value={password}
-            secureTextEntry={true}
-            textContentType="password"
-            onChangeText={(text) => setPassword(text)}
-          />
-          <Button
-            textColor={colors.sb_dark}
-            buttonColor={colors.sb_yellow_100}
-            style={styles.button}
-            mode="contained"
-            onPress={handleLogin}
+          <Formik
+            style={styles.form}
+            initialValues={{ username: "", password: "" }}
+            onSubmit={({ username, password }) => {
+              console.log(username, password);
+              handleLogin(username, password);
+            }}
           >
-            <Text style={defaultStyles.buttonText}>Login</Text>
-          </Button>
+            {({ values, handleChange, handleSubmit }) => (
+              <>
+                <TextInput
+                  label="Username"
+                  value={values.username}
+                  onChangeText={handleChange("username")}
+                />
+                <TextInput
+                  label="Password"
+                  value={values.password}
+                  secureTextEntry={true}
+                  textContentType="password"
+                  onChangeText={handleChange("password")}
+                />
+                {errorMessage && <ErrorMessage error={errorMessage} />}
+                <Button
+                  label={"Login"}
+                  textColor={colors.sb_dark}
+                  buttonColor={colors.sb_yellow_100}
+                  onPress={handleSubmit}
+                />
+              </>
+            )}
+          </Formik>
           <Button
-            textColor={colors.sb_dark}
+            label={"Register"}
+            textColor={colors.sb_bright}
             buttonColor={colors.sb_blue_100}
-            style={styles.button}
-            mode="contained"
-            onPress={() => console.log("Pressed")}
-          >
-            <Text style={defaultStyles.buttonText}>
-              Request for new password
-            </Text>
-          </Button>
-          <Text style={styles.note}>
-            Note: Please contact shopkeeper for new password!
-          </Text>
+            onPress={() => console.log("Register")}
+          />
+          <Button
+            label={"Reset Password"}
+            textColor={colors.sb_bright}
+            buttonColor={colors.sb_blue_100}
+            onPress={() => console.log("Reset Password")}
+          />
         </View>
       </KeyboardAvoidingView>
     </Screen>
@@ -121,13 +143,6 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 15,
     maxWidth: 500,
-  },
-  button: {
-    borderRadius: 5,
-    justifyContent: "center",
-    paddingTop: 6,
-    paddingBottom: 6,
-    marginTop: 6,
   },
   inputTextBox: {
     backgroundColor: colors.sb_bright,

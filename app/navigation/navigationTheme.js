@@ -5,7 +5,7 @@ export default {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.sb_yellow_100,
+    primary: colors.sb_blue_100,
     background: colors.sb_bright,
   },
 };

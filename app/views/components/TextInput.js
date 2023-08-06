@@ -7,7 +7,7 @@ import { colors } from "../styles";
 function AppTextInput(props) {
   const {
     label,
-    value,
+    value = "",
     onChangeText = () => {},
     multiline = false,
     numberOfLines = 1,
@@ -27,11 +27,11 @@ function AppTextInput(props) {
       multiline={multiline}
       numberOfLines={numberOfLines}
       label={label}
-      value={value}
       onChangeText={onChangeText}
       disabled={disabled}
       secureTextEntry={secureTextEntry}
       textContentType={textContentType}
+      value={value}
     />
   );
 }
