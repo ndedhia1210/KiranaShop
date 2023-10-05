@@ -13,14 +13,17 @@ import { defaultStyles, colors } from "../styles";
 import Screen from "../components/Screen";
 import AuthContext from "../../auth/context";
 import auth from "../../api/login";
+import user from "../../api/user";
 import asyncStorage from "../../store/asyncStorage";
-import { USER_OBJECT_KEY } from "../../store/constants";
+import { TOKEN_KEY, USER_OBJECT_KEY } from "../../store/constants";
 import useApi from "../../api/hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import TextInput from "../components/TextInput";
+import { RESPONSE_CODES } from "../../api/responseCodes";
 
 function LoginScreen(props) {
   const loginApi = useApi(auth.login);
+  const getUserApi = useApi(user.getUser);
   const authContext = useContext(AuthContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -29,14 +32,29 @@ function LoginScreen(props) {
 
   const handleLogin = async () => {
     Keyboard.dismiss();
-    const result = await loginApi.request(username, password);
-    if (!result.ok) {
-      // TODO: set state variable to true which will enable the display of error message
-      console.log(result.data);
-      return;
+    try {
+      const authResponse = await loginApi.request(username, password);
+      if (authResponse?.data?.code === RESPONSE_CODES.SUCCESS) {
+        await asyncStorage.storeDataObject(
+          TOKEN_KEY,
+          authResponse?.data?.accessToken
+        );
+        const user = await getUserApi.request(username);
+        console.log(user);
+        if (user?.data?.code === RESPONSE_CODES.SUCCESS) {
+          authContext.setUser(user.data);
+          asyncStorage.storeDataObject(USER_OBJECT_KEY, user.data);
+        } else {
+          // TODO - display appropriate error screen
+          console.log("Error when calling v1/getUser api - ", user.data);
+        }
+      } else {
+        // TODO - display appropriate error screen
+        console.log("Error when calling v1/auth api - ", authResponse.data);
+      }
+    } catch (e) {
+      console.log("Something went wrong when trying to login - ", e);
     }
-    authContext.setUser(result.data);
-    asyncStorage.storeDataObject(USER_OBJECT_KEY, result.data);
   };
 
   return (

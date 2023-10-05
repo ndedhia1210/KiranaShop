@@ -5,3 +5,4 @@
  */
 
 export const USER_OBJECT_KEY = "user";
+export const TOKEN_KEY = "auth-token";
