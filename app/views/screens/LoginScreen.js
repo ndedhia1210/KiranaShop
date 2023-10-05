@@ -13,30 +13,49 @@ import { defaultStyles, colors } from "../styles";
 import Screen from "../components/Screen";
 import AuthContext from "../../auth/context";
 import auth from "../../api/login";
+import user from "../../api/user";
 import asyncStorage from "../../store/asyncStorage";
-import { USER_OBJECT_KEY } from "../../store/constants";
+import { TOKEN_KEY, USER_OBJECT_KEY } from "../../store/constants";
 import useApi from "../../api/hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import TextInput from "../components/TextInput";
+import { RESPONSE_CODES } from "../../api/responseCodes";
 
 function LoginScreen(props) {
   const loginApi = useApi(auth.login);
+  const getUserApi = useApi(user.getUser);
   const authContext = useContext(AuthContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [errorMessage, setErrorMessage] = useState();
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
   const handleLogin = async () => {
     Keyboard.dismiss();
-    const result = await loginApi.request(username, password);
-    if (!result.ok) {
-      // TODO: set state variable to true which will enable the display of error message
-      console.log(result.data);
-      return;
+    try {
+      const authResponse = await loginApi.request(username, password);
+      if (authResponse?.data?.code === RESPONSE_CODES.SUCCESS) {
+        await asyncStorage.storeDataObject(
+          TOKEN_KEY,
+          authResponse?.data?.accessToken
+        );
+        const user = await getUserApi.request(username);
+        if (user?.data?.code === RESPONSE_CODES.SUCCESS) {
+          authContext.setUser(user.data);
+          asyncStorage.storeDataObject(USER_OBJECT_KEY, user.data);
+        } else {
+          console.log("Error when calling v1/getUser api - ", user.data);
+          setErrorMessage(user.data?.errorMessage);
+        }
+      } else {
+        console.log("Error when calling v1/auth api - ", authResponse.data);
+        setErrorMessage(authResponse.data?.errorMessage);
+      }
+    } catch (e) {
+      console.log("Something went wrong when trying to login - ", e);
+      setErrorMessage("Something went wrong. Retry login.");
     }
-    authContext.setUser(result.data);
-    asyncStorage.storeDataObject(USER_OBJECT_KEY, result.data);
   };
 
   return (
@@ -52,18 +71,27 @@ function LoginScreen(props) {
           style={styles.logo}
           source={require("../../assets/AppLogo.png")}
         />
+        {errorMessage && (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        )}
         <View style={styles.form}>
           <TextInput
             label="Username"
             value={username}
-            onChangeText={(text) => setUsername(text)}
+            onChangeText={(text) => {
+              errorMessage && setErrorMessage("");
+              setUsername(text);
+            }}
           />
           <TextInput
             label="Password"
             value={password}
             secureTextEntry={true}
             textContentType="password"
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(text) => {
+              errorMessage && setErrorMessage("");
+              setPassword(text);
+            }}
           />
           <Button
             textColor={colors.sb_dark}
@@ -136,6 +164,11 @@ const styles = StyleSheet.create({
   note: {
     alignSelf: "center",
     fontSize: 15,
+  },
+  errorMessage: {
+    ...defaultStyles.text,
+    color: colors.sb_red_100,
+    alignSelf: "center",
   },
 });
 
