@@ -18,7 +18,7 @@ import TextInput from "../components/TextInput";
 function AccountScreen(props) {
   const authContext = useContext(AuthContext);
   const [name, setName] = useState(authContext.user.name);
-  const [phone, setPhone] = useState(authContext.user.phone);
+  const [phone, setPhone] = useState(authContext.user.phoneNumber);
   const [email, setEmail] = useState(authContext.user.email);
   const [address, setAddress] = useState(authContext.user.address);
 
