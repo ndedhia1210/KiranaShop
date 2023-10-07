@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import {
   Image,
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -10,20 +11,20 @@ import { Button } from "react-native-paper";
 
 import Screen from "../components/Screen";
 import { defaultStyles, colors } from "../styles";
-import AuthContext from "../../auth/context";
+import AuthContext, { AuthContextType } from "../../auth/context";
 import asyncStorage from "../../store/asyncStorage";
 import { USER_OBJECT_KEY } from "../../store/constants";
 import TextInput from "../components/TextInput";
 
 function AccountScreen(props) {
-  const authContext = useContext(AuthContext);
+  const authContext: AuthContextType = useContext(AuthContext);
   const [name, setName] = useState(authContext.user.name);
   const [phone, setPhone] = useState(authContext.user.phoneNumber);
   const [email, setEmail] = useState(authContext.user.email);
   const [address, setAddress] = useState(authContext.user.address);
 
   const handleLogout = () => {
-    authContext.setUser(null);
+    authContext.setUserObject(null);
     asyncStorage.removeData(USER_OBJECT_KEY);
   };
 
@@ -37,7 +38,7 @@ function AccountScreen(props) {
         style={styles.keyboardAvoidView}
       >
         <Text style={styles.headerText}>Profile</Text>
-        <Image style={styles.profileDp} />
+        <Image style={styles.profileDp} source={null} />
         <View style={styles.form}>
           <TextInput
             label="Name"

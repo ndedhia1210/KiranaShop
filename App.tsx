@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AnimatedSplash from "react-native-animated-splash-screen";
 
-import AuthContext from "./app/auth/context";
+import AuthContext, { AuthContextType } from "./app/auth/context";
 import navigationTheme from "./app/navigation/navigationTheme";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
@@ -13,8 +13,12 @@ import { AsyncStatus } from "./app/constants/enums";
 import { colors } from "./app/views/styles";
 
 export default function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<AuthContextType>();
   const [appStatus, setAppStatus] = useState(AsyncStatus.Idle);
+
+  const setUserObject = (userObj) => {
+    setUser(userObj);
+  };
 
   const restoreUserSession = async () => {
     const userObj = await asyncStorage.getDataObject(USER_OBJECT_KEY);
@@ -62,7 +66,7 @@ export default function App() {
       logoHeight={150}
       logoWidth={150}
     >
-      <AuthContext.Provider value={{ user, setUser }}>
+      <AuthContext.Provider value={{ user, setUserObject }}>
         <NavigationContainer theme={navigationTheme}>
           {renderSwitch()}
         </NavigationContainer>

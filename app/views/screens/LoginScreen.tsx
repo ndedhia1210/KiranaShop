@@ -6,12 +6,13 @@ import {
   View,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Button } from "react-native-paper";
 
 import { defaultStyles, colors } from "../styles";
 import Screen from "../components/Screen";
-import AuthContext from "../../auth/context";
+import AuthContext, { AuthContextType } from "../../auth/context";
 import auth from "../../api/login";
 import user from "../../api/user";
 import asyncStorage from "../../store/asyncStorage";
@@ -24,10 +25,10 @@ import { RESPONSE_CODES } from "../../api/responseCodes";
 function LoginScreen(props) {
   const loginApi = useApi(auth.login);
   const getUserApi = useApi(user.getUser);
-  const authContext = useContext(AuthContext);
+  const authContext: AuthContextType = useContext(AuthContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
@@ -42,7 +43,7 @@ function LoginScreen(props) {
         );
         const user = await getUserApi.request(username);
         if (user?.data?.code === RESPONSE_CODES.SUCCESS) {
-          authContext.setUser(user.data);
+          authContext.setUserObject(user.data);
           asyncStorage.storeDataObject(USER_OBJECT_KEY, user.data);
         } else {
           console.log("Error when calling v1/getUser api - ", user.data);
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.sb_bright,
     paddingHorizontal: 25,
     width: "100%",
   },
