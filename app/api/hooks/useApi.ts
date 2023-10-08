@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { AsyncStatus } from "../../constants/enums";
 
-export default useApi = (apiFunc) => {
+const useApi = (apiFunc) => {
   const [data, setData] = useState([]);
   const [apiStatus, setApiStatus] = useState(AsyncStatus.Idle);
 
@@ -22,3 +22,5 @@ export default useApi = (apiFunc) => {
     loading: apiStatus === AsyncStatus.Loading,
   };
 };
+
+export default useApi;
