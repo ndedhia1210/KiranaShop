@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { Button } from "react-native-paper";
+import { useForm } from "react-hook-form";
 
 import { defaultStyles, colors } from "../styles";
 import Screen from "../components/Screen";
@@ -22,26 +23,28 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import TextInput from "../components/TextInput";
 import { RESPONSE_CODES } from "../../api/responseCodes";
 
+const PASSWORD_REGEX = /^[a-z0-9]+$/;
+
 function LoginScreen(props) {
   const loginApi = useApi(auth.login);
   const getUserApi = useApi(user.getUser);
   const authContext: AuthContextType = useContext(AuthContext);
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
   const [errorMessage, setErrorMessage] = useState<string>();
+
+  const { control, handleSubmit } = useForm();
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
-  const handleLogin = async () => {
+  const handleLogin = async (data) => {
     Keyboard.dismiss();
     try {
-      const authResponse = await loginApi.request(username, password);
+      const authResponse = await loginApi.request(data.username, data.password);
       if (authResponse?.data?.code === RESPONSE_CODES.SUCCESS) {
         await asyncStorage.storeDataObject(
           TOKEN_KEY,
           authResponse?.data?.accessToken
         );
-        const user = await getUserApi.request(username);
+        const user = await getUserApi.request(data.username);
         if (user?.data?.code === RESPONSE_CODES.SUCCESS) {
           authContext.setUserObject(user.data);
           asyncStorage.storeDataObject(USER_OBJECT_KEY, user.data);
@@ -61,7 +64,7 @@ function LoginScreen(props) {
 
   return (
     <Screen style={styles.container}>
-      <ActivityIndicator visible={loginApi.loading} />
+      <ActivityIndicator visible={loginApi.loading || getUserApi.loading} />
       <KeyboardAvoidingView
         behavior="position"
         keyboardVerticalOffset={keyboardVerticalOffset}
@@ -78,20 +81,30 @@ function LoginScreen(props) {
         <View style={styles.form}>
           <TextInput
             label="Username"
-            value={username}
-            onChangeText={(text) => {
-              errorMessage && setErrorMessage("");
-              setUsername(text);
-            }}
+            name="username"
+            control={control}
+            rules={{ required: "Username is required" }}
           />
           <TextInput
             label="Password"
-            value={password}
+            name="password"
+            control={control}
             secureTextEntry={true}
             textContentType="password"
-            onChangeText={(text) => {
-              errorMessage && setErrorMessage("");
-              setPassword(text);
+            rules={{
+              required: "Password is required",
+              pattern: {
+                value: PASSWORD_REGEX,
+                message: "Password should be alphanumeric",
+              },
+              minLength: {
+                value: 5,
+                message: "Password should be 5 - 10 characters long",
+              },
+              maxLength: {
+                value: 10,
+                message: "Password should be 5 - 10 characters long",
+              },
             }}
           />
           <Button
@@ -99,7 +112,7 @@ function LoginScreen(props) {
             buttonColor={colors.sb_yellow_100}
             style={styles.button}
             mode="contained"
-            onPress={handleLogin}
+            onPress={handleSubmit(handleLogin)}
           >
             <Text style={defaultStyles.buttonText}>Login</Text>
           </Button>
