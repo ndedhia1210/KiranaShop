@@ -1,5 +1,5 @@
 import React from "react";
-import { UserDetails } from "../models/user";
+import { UserDetails } from "../models";
 
 export interface AuthContextType {
     user: UserDetails;
