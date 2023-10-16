@@ -3,7 +3,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ToastProvider } from "react-native-toast-notifications";
 
 import ProductNavigator from "./ProductNavigator";
-import CategoryListScreen from "../views/screens/CategoryListScreen";
 import AccountScreen from "../views/screens/AccountScreen";
 import CartScreen from "../views/screens/CartScreen";
 import OrderListScreen from "../views/screens/OrderListScreen";
