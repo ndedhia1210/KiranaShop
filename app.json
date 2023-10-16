@@ -10,7 +10,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sb.ma"
     },
     "android": {
       "package": "com.sb.ma",
@@ -24,7 +25,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "a29e0e76-53bc-43ee-b3f6-5745b9d59fa9"
+        "projectId": "abe4b3f2-1e66-43ae-87b4-5ba6ae328014"
       }
     }
   }

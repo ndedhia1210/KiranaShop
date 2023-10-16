@@ -1,26 +1,19 @@
 {
   "cli": {
-    "version": ">= 3.9.0"
+    "version": ">= 5.4.0"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
-      }
+      "distribution": "internal"
     },
     "preview": {
       "distribution": "internal",
       "ios": {
-        "resourceClass": "m-medium"
+        "simulator": true
       }
     },
-    "production": {
-      "ios": {
-        "resourceClass": "m-medium"
-      }
-    }
+    "production": {}
   },
   "submit": {
     "production": {}
