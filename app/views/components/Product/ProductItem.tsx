@@ -11,9 +11,9 @@ function ProductItem(props) {
   return (
     <TouchableHighlight
       style={styles.item}
-      //   onPress={() => {
-      //     navigation.navigate("ProductDetails", { productDetails });
-      //   }}
+      onPress={() => {
+        navigation.navigate("ProductDetails", { productDetails });
+      }}
       underlayColor={colors.sb_orange_100}
     >
       <>

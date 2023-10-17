@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import CategoryListScreen from "../views/screens/CategoryListScreen";
 import ProductListScreen from "../views/screens/ProductListScreen";
-// import ProductDetailsScreen from "../views/screens/ProductDetailsScreen";
+import ProductDetailsScreen from "../views/screens/ProductDetailsScreen";
 
 const Stack = createStackNavigator();
 
@@ -12,8 +12,7 @@ const ProductNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name={"Categories"} component={CategoryListScreen} />
       <Stack.Screen name={"Productlist"} component={ProductListScreen} />
-      {/* TODO: Add navigation for the product details screen once it is available *?}
-      {/* <Stack.Screen name={"ProductDetails"} component={ProductDetailsScreen} /> */}
+      <Stack.Screen name={"ProductDetails"} component={ProductDetailsScreen} />
     </Stack.Navigator>
   );
 };
