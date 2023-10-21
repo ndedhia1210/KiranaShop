@@ -3,9 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ToastProvider } from "react-native-toast-notifications";
 
 import ProductNavigator from "./ProductNavigator";
-import AccountScreen from "../views/screens/AccountScreen";
-import CartScreen from "../views/screens/CartScreen";
-import OrderListScreen from "../views/screens/OrderListScreen";
+import { AccountScreen, CartScreen, OrderListScreen } from "../views/screens";
 
 const Tab = createBottomTabNavigator();
 

@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from "react";
 import { View, StyleSheet, Animated, Easing } from "react-native";
 import Lottie from "lottie-react-native";
 
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 
-function ActivityIndicator({ visible = false }) {
+export function ActivityIndicator({ visible = false }) {
   if (!visible) return null;
 
   const animationProgress = useRef(new Animated.Value(0));
@@ -22,7 +22,7 @@ function ActivityIndicator({ visible = false }) {
     <View style={styles.overlay}>
       <Lottie
         progress={animationProgress.current}
-        source={require("../../assets/animation/loading.json")}
+        source={require("../../../assets/animation/loading.json")}
       />
     </View>
   );
@@ -39,5 +39,3 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 });
-
-export default ActivityIndicator;

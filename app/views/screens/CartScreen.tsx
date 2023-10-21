@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 
-import Screen from "../components/Screen";
+import { Screen } from "../components/common";
 import { defaultStyles, colors } from "../styles";
 
-function CartScreen(props) {
+export function CartScreen(props) {
   return (
     <Screen style={styles.container}>
       <Text style={styles.text}>Cart screen coming soon...</Text>
@@ -26,5 +26,3 @@ const styles = StyleSheet.create({
     color: colors.sb_bright,
   },
 });
-
-export default CartScreen;

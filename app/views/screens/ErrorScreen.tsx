@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 
-import Screen from "../components/Screen";
+import { Screen } from "../components/common";
 import { defaultStyles, colors } from "../styles";
 
-function ErrorScreen(props) {
+export function ErrorScreen(props) {
   return (
     <Screen style={styles.container}>
       <Text style={styles.heading}>Oops!</Text>
@@ -37,5 +37,3 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
 });
-
-export default ErrorScreen;

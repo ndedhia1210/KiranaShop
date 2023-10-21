@@ -2,10 +2,10 @@ import { StyleSheet, Text } from "react-native";
 import React from "react";
 import { TextInput } from "react-native-paper";
 
-import { colors } from "../styles";
+import { colors } from "../../styles";
 import { Controller } from "react-hook-form";
 
-function AppTextInput(props) {
+export function AppTextInput(props) {
   const {
     name,
     control,
@@ -64,5 +64,3 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
 });
-
-export default AppTextInput;
