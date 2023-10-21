@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 
-import Screen from "../components/Screen";
-import CategoryList from "../components/Category/CategoryList";
+import { Screen } from "../components/common";
+import CategoryList from "../components/category/CategoryList";
 
-function CategoryListScreen({ navigation }) {
+export function CategoryListScreen({ navigation }) {
   return (
     <Screen style={styles.container}>
       <Text style={styles.headerText}>Categories</Text>
@@ -24,5 +24,3 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
-
-export default CategoryListScreen;

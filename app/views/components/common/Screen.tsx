@@ -15,7 +15,7 @@ import {
  *
  * Every screen of the app should be wrapped by this 'Screen' component.
  */
-function Screen({ children, style }) {
+export function Screen({ children, style }) {
   return (
     <SafeAreaView style={[styles.screen, style]}>
       <StatusBar barStyle={"dark-content"} />
@@ -33,5 +33,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-export default Screen;

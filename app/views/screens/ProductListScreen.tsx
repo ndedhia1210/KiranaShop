@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import Screen from "../components/Screen";
-import ProductList from "../components/Product/ProductList";
+import { Screen } from "../components/common";
+import ProductList from "../components/product/ProductList";
 
-function ProductListScreen({ navigation, route }) {
+export function ProductListScreen({ navigation, route }) {
   return (
     <Screen style={styles.container}>
       <MaterialCommunityIcons
@@ -37,5 +37,3 @@ const styles = StyleSheet.create({
     left: 8,
   },
 });
-
-export default ProductListScreen;
