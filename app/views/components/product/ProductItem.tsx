@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     margin: 3,
-    height: 80,
+    height: "100%",
     borderRadius: 5,
     backgroundColor: colors.sb_orange_200,
     flexDirection: "row",
