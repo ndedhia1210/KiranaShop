@@ -12,17 +12,15 @@ import { Button } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { useToast } from "react-native-toast-notifications";
 
-import Screen from "../components/Screen";
+import { Screen, TextInput, ActivityIndicator } from "../components/common";
 import { defaultStyles, colors } from "../styles";
 import AuthContext, { AuthContextType } from "../../auth/context";
 import asyncStorage from "../../store/asyncStorage";
 import { USER_OBJECT_KEY } from "../../store/constants";
-import TextInput from "../components/TextInput";
 import { UserDetails } from "../../models";
 import useApi from "../../api/hooks/useApi";
 import user from "../../api/user";
 import { RESPONSE_CODES } from "../../api/responseCodes";
-import ActivityIndicator from "../components/ActivityIndicator";
 import { TOAST_TYPE, showNotificationToast } from "../../utility/toastHelper";
 
 const EMAIL_REGEX =
@@ -30,7 +28,7 @@ const EMAIL_REGEX =
 
 const PHONE_NUMBER_REGEX = /^[0-9]+$/;
 
-function AccountScreen(props) {
+export function AccountScreen(props) {
   const authContext: AuthContextType = useContext(AuthContext);
   const { name, username, phoneNumber, email, address } = authContext.user;
   const updateUserApi = useApi(user.updateUser);
@@ -238,5 +236,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-export default AccountScreen;

@@ -12,20 +12,18 @@ import { Button } from "react-native-paper";
 import { useForm } from "react-hook-form";
 
 import { defaultStyles, colors } from "../styles";
-import Screen from "../components/Screen";
+import { Screen, ActivityIndicator, TextInput } from "../components/common";
 import AuthContext, { AuthContextType } from "../../auth/context";
 import auth from "../../api/login";
 import user from "../../api/user";
 import asyncStorage from "../../store/asyncStorage";
 import { TOKEN_KEY, USER_OBJECT_KEY } from "../../store/constants";
 import useApi from "../../api/hooks/useApi";
-import ActivityIndicator from "../components/ActivityIndicator";
-import TextInput from "../components/TextInput";
 import { RESPONSE_CODES } from "../../api/responseCodes";
 
 const PASSWORD_REGEX = /^[a-z0-9]+$/;
 
-function LoginScreen(props) {
+export function LoginScreen(props) {
   const loginApi = useApi(auth.login);
   const getUserApi = useApi(user.getUser);
   const authContext: AuthContextType = useContext(AuthContext);
@@ -185,5 +183,3 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
-
-export default LoginScreen;
