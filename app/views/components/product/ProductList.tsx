@@ -5,10 +5,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 
 import ProductItem from "./ProductItem";
-import { listGenerator } from "../../../utility/generateListHelper";
 import { colors } from "../../styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { BottomSheetPopup } from "../common";
+import product from "../../../api/product";
+import useApi from "../../../api/hooks/useApi";
+import { ComponentLoadingIndicator } from "../common/ComponentLoadingIndicator";
 
 enum SORT_TYPE {
   NO_SORT = "No sorting",
@@ -25,9 +27,10 @@ enum SORT_TYPE_ICON {
 function ProductList({ categoryDetails }) {
   const searchRef = useRef(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const getProductsByCategoryApi = useApi(product.getProductsByCategory);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchText, setSearchText] = useState<string>();
+  const [searchText, setSearchText] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedSortOption, setSelectedSortOption] = useState<number>();
 
@@ -37,16 +40,15 @@ function ProductList({ categoryDetails }) {
     { label: SORT_TYPE.BY_NAME_DESC, icon: SORT_TYPE_ICON.BY_NAME_DESC },
   ];
 
-  function getProducts() {
-    return listGenerator(16, categoryDetails.name);
-  }
-
   useEffect(() => {
-    const list = getProducts();
-    setProducts([...list]);
-    setFilteredProducts([...list]);
-    setSearchText("");
-    setSelectedSortOption(0);
+    const loadProducts = async () => {
+      const list = await getProductsByCategoryApi.request(categoryDetails.id);
+      setProducts(list?.data?.products || []);
+      setFilteredProducts(list?.data?.products || []);
+      setSearchText("");
+      setSelectedSortOption(0);
+    };
+    loadProducts();
   }, []);
 
   useEffect(() => {
@@ -85,7 +87,8 @@ function ProductList({ categoryDetails }) {
   );
 
   const keyExtractor = useCallback(
-    (item, index) => (item.name as string).concat(index.toString()),
+    // (item, index) => (item.name as string).concat(index.toString()),
+    (item) => item.id,
     []
   );
 
@@ -155,6 +158,7 @@ function ProductList({ categoryDetails }) {
           </TouchableOpacity>
         </View>
       </View>
+      <ComponentLoadingIndicator visible={getProductsByCategoryApi.loading} />
       <FlatList
         data={filteredProducts}
         numColumns={1}

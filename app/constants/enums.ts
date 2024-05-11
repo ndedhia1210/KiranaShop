@@ -17,3 +17,8 @@ export enum TAG_TYPE {
   BEST_VALUE = "Best value",
   POPULAR = "Popular",
 }
+
+export enum CURRENCY_DISPLAY_TEXT {
+  RS = "Rs. ",
+  USD = "$",
+}

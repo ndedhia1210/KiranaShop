@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { colors } from "../../styles";
+import { CURRENCY_DISPLAY_TEXT } from "../../../constants/enums";
 
 function ProductItem(props) {
   const { productDetails } = props;
@@ -21,8 +22,13 @@ function ProductItem(props) {
         <View style={styles.detailRowContainer}>
           <Text style={styles.name}>{productDetails.name}</Text>
           <View style={styles.detailRow}>
-            <Text style={styles.quantity}>500g</Text>
-            <Text style={styles.price}>Rs. {productDetails.price}/-</Text>
+            <Text style={styles.quantity}>
+              {productDetails.minimumQuantity} {productDetails.unitMeasure}
+            </Text>
+            <Text style={styles.price}>
+              {CURRENCY_DISPLAY_TEXT[productDetails.currency]}
+              {productDetails.unitPrice}
+            </Text>
           </View>
         </View>
       </>
@@ -68,6 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 5,
     marginLeft: "auto",
+    marginRight: 10,
     fontWeight: "600",
   },
 });
