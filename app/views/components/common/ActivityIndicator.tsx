@@ -1,30 +1,19 @@
-import React, { useRef, useEffect } from "react";
-import { View, StyleSheet, Animated, Easing } from "react-native";
-import Lottie from "lottie-react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 
 import colors from "../../styles/colors";
+import LottieView from "lottie-react-native";
 
 export function ActivityIndicator({ visible = false }) {
   if (!visible) return null;
 
-  const animationProgress = useRef(new Animated.Value(0));
-
-  useEffect(() => {
-    Animated.timing(animationProgress.current, {
-      toValue: 1,
-      duration: 5000,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-  }, []);
-
   return (
-    <View style={styles.overlay}>
-      <Lottie
-        progress={animationProgress.current}
-        source={require("../../../assets/animation/loading.json")}
-      />
-    </View>
+    <LottieView
+      style={styles.overlay}
+      source={require("../../../assets/animation/loading.json")}
+      autoPlay
+      loop
+    />
   );
 }
 
